@@ -1,3 +1,23 @@
+/*
+Copyright 2015-2020 Julien Mille
+
+This file is part of the PixelLabeling source code package.
+
+PixelLabeling is free software: you can redistribute
+it and/or modify it under the terms of the GNU Lesser General Public License
+as published by the Free Software Foundation, either version 3 of the License,
+or (at your option) any later version.
+
+PixelLabeling is distributed in the hope that it will
+be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License,
+and a copy of the GNU Lesser General Public License, along with
+PixelLabeling. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #ifndef LABELING_WINDOW_H
 #define LABELING_WINDOW_H
 
@@ -7,10 +27,10 @@
 
 class LabelingWindow;
 
-class MyFrame : public QFrame
+class LabelingFRame : public QFrame
 {
   public:
-    MyFrame(QWidget *pParent=0):QFrame(pParent)
+    LabelingFRame(QWidget *pParent=0):QFrame(pParent)
     {
         pParentViewer = NULL;
     }
@@ -24,10 +44,11 @@ class MyFrame : public QFrame
     virtual void paintEvent(QPaintEvent *);
 };
 
+/* The LabelingWindow is inspired from the ImageViewer Qt example */
 class LabelingWindow : public QMainWindow
 {
-    friend class CDialogClassSelection;
-    friend class MyFrame;
+    friend class DialogClassSelection;
+    friend class LabelingFRame;
 
   public:
     LabelingWindow();
@@ -48,7 +69,6 @@ class LabelingWindow : public QMainWindow
     void zoomIn();
     void zoomOut();
     void normalSize();
-    void fitToWindow();
     void about();
 
     void createActions();
@@ -59,32 +79,28 @@ class LabelingWindow : public QMainWindow
 
     virtual void keyPressEvent(QKeyEvent *);
     virtual void keyReleaseEvent(QKeyEvent *);
-    virtual void closeEvent(QCloseEvent *);
 
-    MyFrame *frame;
-    CDialogClassSelection *pDlgClasses;
+    LabelingFRame *frame;
+    DialogClassSelection *pDlgClasses;
     QScrollArea *scrollArea;
     float scaleFactor;
 
     std::string strFilename;
 
     cv::Mat imgInput;
-    enum {NONE, IMAGE} iInputType;
     QImage qimgInput, qimgOutput;
 
-    CLabeling labeling;
-        // cv::Point piMouseLastPress; // Position at which the mouse was last pressed (coordinates of the QLabel)
+    Labeling labeling;
     cv::Point piMouseCurrent;
 
-    // enum {MOUSEMODE_INIT, MOUSEMODE_DRAW, MOUSEMODE_DISPLACE} iMouseMode;
-    // enum {INITMODE_CIRCLE, INITMODE_ELLIPSE, INITMODE_LINE} iInitMode;
-
+    bool imageOpen;
     bool bLeftButtonPressed;
     bool bRightButtonPressed;
     bool bShiftKeyPressed;
-    int iPenRadius;
-    int iOpacity;
-    unsigned int currentLabel; // For multiple region
+
+    unsigned int penRadius;
+    unsigned int opacity;
+    unsigned int currentLabel;
 
     QAction *openImageAct;
     QAction *openLabelAct;
@@ -95,7 +111,6 @@ class LabelingWindow : public QMainWindow
     QAction *zoomInAct;
     QAction *zoomOutAct;
     QAction *normalSizeAct;
-    QAction *fitToWindowAct;
     QAction *aboutAct;
     QAction *aboutQtAct;
 
