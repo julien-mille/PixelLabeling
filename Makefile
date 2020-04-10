@@ -11,7 +11,7 @@ LIBS = -lopencv_imgproc -lopencv_imgcodecs -lopencv_core -lQt5Core -lQt5Gui -lQt
 
 default: $(FINAL_TARGET)
 
-$(FINAL_TARGET): dialogclassselection.o dialogparams.o labeling.o labelingwindow.o main.o
+$(FINAL_TARGET): dialogclassselection.o labeling.o labelingwindow.o main.o
 	$(LD) $+ -o $@ $(LDFLAGS) $(LIB_DIR) $(LIBS)
 
 %.o: %.cpp
